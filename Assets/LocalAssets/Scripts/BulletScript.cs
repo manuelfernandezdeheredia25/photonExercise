@@ -1,3 +1,4 @@
+using Photon.Pun;
 using System.Collections;
 using UnityEngine;
 
@@ -33,6 +34,11 @@ public class BulletScript : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.TryGetComponent( out TankController tank))
+        {
+            if (tank.PlayerName == owner)
+                return;
+        }
         Destroy(gameObject);
     }
 }
