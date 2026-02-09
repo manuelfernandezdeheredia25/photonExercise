@@ -1,4 +1,6 @@
 using Photon.Pun;
+using Photon.Pun.Demo.Asteroids;
+using Photon.Pun.Demo.SlotRacer.Utils;
 using System.Collections;
 using UnityEngine;
 
@@ -38,7 +40,21 @@ public class BulletScript : MonoBehaviour
         {
             if (tank.PlayerName == owner)
                 return;
+            if (PhotonNetwork.IsMasterClient)
+            {
+                tank.pv.RPC("SetLife", RpcTarget.All, tank.life - damage);
+                Destroy(gameObject);
+                if (tank.life <= 0)
+                {
+                    tank.pv.RPC("DiedTo", RpcTarget.All, owner);
+                }
+            }
         }
-        Destroy(gameObject);
+
+
+        //Destroy(gameObject);
+        ContactPoint firstContact = collision.GetContact(0);
+
+        movingDirection = Vector3.Reflect(movingDirection, firstContact.normal);
     }
 }

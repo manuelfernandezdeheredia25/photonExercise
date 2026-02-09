@@ -144,16 +144,16 @@ public class TankController : MonoBehaviourPunCallbacks
     {
 
 
-        if (PhotonNetwork.IsMasterClient &&
-            collision.gameObject.TryGetComponent(out BulletScript bullet) )
-        {
-            if (bullet.owner == PlayerName) return;
+        //if (PhotonNetwork.IsMasterClient &&
+        //    collision.gameObject.TryGetComponent(out BulletScript bullet) )
+        //{
+        //    if (bullet.owner == PlayerName) return;
 
-            pv.RPC("SetLife", RpcTarget.All, life - bullet.damage);
-            if (life <= 0)
-            {
-                pv.RPC("DiedTo", RpcTarget.All,bullet.owner);   
-            }
-        }
+        //    pv.RPC("SetLife", RpcTarget.All, life - bullet.damage);
+        //    if (life <= 0)
+        //    {
+        //        pv.RPC("DiedTo", RpcTarget.All,bullet.owner);   
+        //    }
+        //}
     }
 }
