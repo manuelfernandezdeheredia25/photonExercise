@@ -20,4 +20,6 @@ public class PlayerController : MonoBehaviourPunCallbacks
             transform.Translate(movimiento);
         }
     }
+
+    
 }

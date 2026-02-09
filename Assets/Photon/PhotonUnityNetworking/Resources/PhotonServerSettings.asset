@@ -40,6 +40,18 @@ MonoBehaviour:
   - Fire
   - RespawnSpaceship
   - SetNameText
+  - GetMessage
+  - ShootBullet
+  - SetLife
+  - DiedTo
+  - NewPlayerOnLeaderBoards
+  - SetName
+  - SetDeaths
+  - SetKills
+  - SetPoints
+  - uiSetup
+  - JoinLeaderBoard
+  - UpdateLeaderboardUI
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

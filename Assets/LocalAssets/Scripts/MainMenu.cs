@@ -17,16 +17,24 @@ public class MainMenu : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.NickName = usernameInput.text;
 
-            // setearemos en el player pref llamado "PlayerName" nuestro texto
+            //Seteamos en el playerprefs llamado "PlayerName" nuestro texto
             PlayerPrefs.SetString("PlayerName", usernameInput.text);
+
             buttonText.text = "Conectando al servidor...";
             PhotonNetwork.ConnectUsingSettings();
         }
-
     }
 
     public override void OnConnectedToMaster()
     {
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("testTanques");
+    }
+
+    public void Update()
+    {
+        if (usernameInput.isFocused == true && Input.GetKeyDown(KeyCode.Return))
+        {
+            OnClickConnect();
+        }
     }
 }

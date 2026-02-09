@@ -138,3 +138,10 @@ TextureImporter:
   userData: 
   assetBundleName: 
   assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 119922
+  packageName: PUN 2 - FREE
+  packageVersion: 2.52
+  assetPath: Assets/Photon/PhotonChat/Demos/Demo Chat/Resources/chat-logo.png
+  uploadId: 817708
