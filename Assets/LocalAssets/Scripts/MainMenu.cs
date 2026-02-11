@@ -11,6 +11,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     public TMP_Text buttonText;
 
+    public TankSelector tankSelector;
+
     public void OnClickConnect()
     {
         if (usernameInput.text.Length >= 1)
@@ -19,7 +21,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
             //Seteamos en el playerprefs llamado "PlayerName" nuestro texto
             PlayerPrefs.SetString("PlayerName", usernameInput.text);
-
+            PlayerPrefs.SetString("TankType", tankSelector.selectedTank.TankPrefab.name);
             buttonText.text = "Conectando al servidor...";
             PhotonNetwork.ConnectUsingSettings();
         }

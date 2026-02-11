@@ -13,7 +13,7 @@ public class TankController : MonoBehaviourPunCallbacks
     public float speed = 5;
     public float maxLife = 4;
     public float damage = 1;
-
+    public float cooldown = 1;
     public Transform rotor;
     public Transform body;
     public Transform cannonTip;
@@ -51,7 +51,7 @@ public class TankController : MonoBehaviourPunCallbacks
     public bool CooldownOff
     {
         get {
-            return Time.time - startTime > 1f;
+            return Time.time - startTime > cooldown;
         }
     }
     void Start()

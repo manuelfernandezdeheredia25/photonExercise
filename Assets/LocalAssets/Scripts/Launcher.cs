@@ -43,7 +43,7 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         int sp_index = Random.Range(0, spawnPoints.Length);
         //Creamos la instancia del jugador en el punto de spawn
-        GameObject player = PhotonNetwork.Instantiate(playerPrefab.name, spawnPoints[sp_index].position, spawnPoints[sp_index].rotation);
+        GameObject player = PhotonNetwork.Instantiate(PlayerPrefs.GetString("TankType"), spawnPoints[sp_index].position, spawnPoints[sp_index].rotation);
         //Con esto hariamos una llamada al servidor para darle el nombre que guardamos en playerPrefs y llamamos al resto de jugadores para que actualicen su info
         player.GetComponent<PhotonView>().RPC("SetNameText", RpcTarget.AllBuffered, PlayerPrefs.GetString("PlayerName"));
         player.GetComponent<TankController>().OnDied += OnPlayerDead;
