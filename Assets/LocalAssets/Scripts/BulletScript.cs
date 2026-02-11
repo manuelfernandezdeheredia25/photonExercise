@@ -7,12 +7,15 @@ using UnityEngine;
 public class BulletScript : MonoBehaviour
 {
 
-    public int damage;
+    public float damage;
     public Vector3 target;
     public float speed;
+    public int bounceCount;
+    
     public string owner;
     private Vector3 movingDirection = Vector3.zero;
 
+    private int bounces = 0;
     private void Start()
     {
         StartCoroutine(DestroyBullet());
@@ -51,10 +54,15 @@ public class BulletScript : MonoBehaviour
             }
         }
 
+        bounces++;
+        if (bounces > bounceCount)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
-        //Destroy(gameObject);
         ContactPoint firstContact = collision.GetContact(0);
-
+        
         movingDirection = Vector3.Reflect(movingDirection, firstContact.normal);
     }
 }

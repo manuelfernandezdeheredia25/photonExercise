@@ -14,6 +14,7 @@ public class TankController : MonoBehaviourPunCallbacks
     public float maxLife = 4;
     public float damage = 1;
     public float cooldown = 1;
+    public int bounceCount = 1;
     public Transform rotor;
     public Transform body;
     public Transform cannonTip;
@@ -112,6 +113,8 @@ public class TankController : MonoBehaviourPunCallbacks
         bullet.transform.position = cannonTip.position;
         bullet.GetComponent<BulletScript>().target = bulletInfo;
         bullet.GetComponent<BulletScript>().owner = PlayerName;
+        bullet.GetComponent<BulletScript>().damage = damage;
+        bullet.GetComponent<BulletScript>().bounceCount = bounceCount;
         startCooldown();
     }
 
