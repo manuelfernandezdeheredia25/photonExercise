@@ -4,6 +4,7 @@ using UnityEngine;
 using TMPro;
 using Photon.Pun;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MainMenu : MonoBehaviourPunCallbacks
 {
@@ -12,6 +13,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
     public TMP_Text buttonText;
 
     public TankSelector tankSelector;
+
 
     public void OnClickConnect()
     {
@@ -39,4 +41,6 @@ public class MainMenu : MonoBehaviourPunCallbacks
             OnClickConnect();
         }
     }
+
+
 }

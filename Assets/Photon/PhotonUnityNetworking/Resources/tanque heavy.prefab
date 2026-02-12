@@ -592,6 +592,12 @@ PrefabInstance:
       propertyPath: cannonTip
       value: 
       objectReference: {fileID: 7041432701491390169}
+    - target: {fileID: 4288924903106459769, guid: 36550ba6b482c35458bc8fe71f67812f,
+        type: 3}
+      propertyPath: bulletPrefab
+      value: 
+      objectReference: {fileID: 7326327683938824734, guid: b51e764b0a3b0404ea1c54bf5b6b1fc3,
+        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 4718415535400792104, guid: 36550ba6b482c35458bc8fe71f67812f, type: 3}

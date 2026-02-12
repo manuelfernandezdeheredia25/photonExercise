@@ -8,12 +8,17 @@ using Photon.Realtime;
 public class Launcher : MonoBehaviourPunCallbacks
 {
     //Creamos una variable pública para poder instanciar al jugador a través de su componente PhotonView
-    public PhotonView playerPrefab;
+    public PhotonView botPrefab;
     
     //Variable pública para poder utilizar el punto de Spawn en el que crear cada objeto jugador.
     public Transform[] spawnPoints;
 
     public PlayerLeaderboard leaderboard;
+
+    private List<GameObject> bots = new List<GameObject>();
+
+    public GameObject botPanel;
+    public TMP_Text botCountLabel;
     
     void Start()
     {
@@ -22,7 +27,7 @@ public class Launcher : MonoBehaviourPunCallbacks
 
         // OnJoinedRoom();
 
-        PhotonNetwork.JoinRandomOrCreateRoom();
+        PhotonNetwork.JoinRandomOrCreateRoom(expectedMaxPlayers: 4);
     }
 
     /*
@@ -34,10 +39,6 @@ public class Launcher : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinRandomOrCreateRoom();
     }
     */
-    public override void OnCreatedRoom()
-    {
-        // if bots, create bots
-    }
 
     public override void OnJoinedRoom()
     {
@@ -48,10 +49,37 @@ public class Launcher : MonoBehaviourPunCallbacks
         player.GetComponent<PhotonView>().RPC("SetNameText", RpcTarget.AllBuffered, PlayerPrefs.GetString("PlayerName"));
         player.GetComponent<TankController>().OnDied += OnPlayerDead;
         
+        if (PhotonNetwork.IsMasterClient) {
+            botPanel.SetActive(true);
+        }
         Debug.Log("finished player join");
     }
 
-    
+    public Transform GetRandomSpawnPoint()
+    {
+        int sp_index = Random.Range(0, spawnPoints.Length);
+        return spawnPoints[sp_index];
+    }
+    public void CreateNewBot()
+    {
+        Transform spawn = GetRandomSpawnPoint();
+        GameObject bot = PhotonNetwork.Instantiate(botPrefab.name,spawn.position , spawn.rotation);
+        bots.Add(bot);
+       
+        bot.GetComponent<PhotonView>().RPC("SetNameText", RpcTarget.AllBuffered, "TankBot_0" + bots.Count.ToString());
+        bot.GetComponent<TankController>().OnDied += OnPlayerDead;
+        bot.GetComponent<TankControllerBot>().launcher = this;
+
+        leaderboard.photonView.RPC("JoinLeaderBoard", RpcTarget.MasterClient, "TankBot_0" + bots.Count.ToString());
+    }
+
+    public override void OnMasterClientSwitched(Player newMasterClient)
+    {
+        if (PhotonNetwork.IsMasterClient)
+        {
+            botPanel.SetActive(true);
+        }
+    }
 
     public void OnPlayerDead(TankController playerDead, string killer)
     {

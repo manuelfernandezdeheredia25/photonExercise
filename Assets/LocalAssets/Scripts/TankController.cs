@@ -55,14 +55,14 @@ public class TankController : MonoBehaviourPunCallbacks
             return Time.time - startTime > cooldown;
         }
     }
-    void Start()
+    protected void Start()
     {
         life = maxLife;
         pv = GetComponent<PhotonView>();
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
         if (photonView.IsMine && controlEnabled)
         {
