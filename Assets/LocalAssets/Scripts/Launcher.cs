@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Photon.Realtime;
+using System.Linq;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
@@ -14,8 +15,17 @@ public class Launcher : MonoBehaviourPunCallbacks
     public Transform[] spawnPoints;
 
     public PlayerLeaderboard leaderboard;
-
+    [HideInInspector]
+    public List<GameObject> players = new List<GameObject>();
     private List<GameObject> bots = new List<GameObject>();
+    
+    public List<GameObject> tanks
+    {
+        get
+        {
+            return players.Concat(bots).ToList();
+        }
+    }
 
     public GameObject botPanel;
     public TMP_Text botCountLabel;
@@ -49,6 +59,8 @@ public class Launcher : MonoBehaviourPunCallbacks
         player.GetComponent<PhotonView>().RPC("SetNameText", RpcTarget.AllBuffered, PlayerPrefs.GetString("PlayerName"));
         player.GetComponent<TankController>().OnDied += OnPlayerDead;
         
+
+        players.Add(player);
         if (PhotonNetwork.IsMasterClient) {
             botPanel.SetActive(true);
         }

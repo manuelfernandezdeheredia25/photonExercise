@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5627710084861498966}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: hud
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -45,7 +45,7 @@ GameObject:
   - component: {fileID: 8478408916782649429}
   - component: {fileID: 6326875753241915628}
   - component: {fileID: 5570367670566984998}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: lifebase
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -129,7 +129,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6486452272985789993}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: tip
   m_TagString: Untagged
   m_Icon: {fileID: -5442936267250999957, guid: 0000000000000000d000000000000000, type: 0}
@@ -165,9 +165,9 @@ GameObject:
   - component: {fileID: 3639746389025950354}
   - component: {fileID: -8262289039699925923}
   - component: {fileID: 3535559604007978021}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: tanque
-  m_TagString: Untagged
+  m_TagString: tank
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -204,6 +204,8 @@ MonoBehaviour:
   speed: 12
   maxLife: 4
   damage: 1
+  cooldown: 1
+  bounceCount: 1
   rotor: {fileID: 2375373860653049873}
   body: {fileID: 8390034573444843331}
   cannonTip: {fileID: 6486452272985789993}
@@ -305,7 +307,7 @@ GameObject:
   - component: {fileID: 862375519404029218}
   - component: {fileID: 2170781351109478675}
   - component: {fileID: 4302825797908214267}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -430,7 +432,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5346051220694887058}
   - component: {fileID: 3750892683432094848}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: TanqueBase(180GiradoEdit)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -489,9 +491,9 @@ GameObject:
   - component: {fileID: 7685243487608577681}
   - component: {fileID: 3347119724013044033}
   - component: {fileID: 6506416667349507720}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Body
-  m_TagString: Untagged
+  m_TagString: tank
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -638,7 +640,7 @@ GameObject:
   - component: {fileID: 2455623501660734134}
   - component: {fileID: 1887634240223879033}
   - component: {fileID: 2448598120225361663}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: lifeRemaining
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -724,7 +726,7 @@ GameObject:
   - component: {fileID: 2334016341791504696}
   - component: {fileID: 6287122731723360017}
   - component: {fileID: 6591225819143255835}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: nombre
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -900,7 +902,7 @@ GameObject:
   - component: {fileID: 2126789481107353305}
   - component: {fileID: 2320635380473255149}
   - component: {fileID: 179569881772891995}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Canon
   m_TagString: Untagged
   m_Icon: {fileID: 0}

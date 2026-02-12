@@ -27,6 +27,7 @@ public class BulletScript : MonoBehaviour
     {
 
         transform.position += movingDirection * speed * Time.deltaTime;
+        transform.forward = movingDirection;
     }
 
 
