@@ -31,7 +31,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     public override void OnConnectedToMaster()
     {
-        SceneManager.LoadScene("testTanques");
+        //SceneManager.LoadScene("testTanques");
+        SceneManager.LoadScene("BattleScenario");
     }
 
     public void Update()

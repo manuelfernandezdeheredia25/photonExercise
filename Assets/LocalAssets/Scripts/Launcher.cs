@@ -72,8 +72,24 @@ public class Launcher : MonoBehaviourPunCallbacks
         int sp_index = Random.Range(0, spawnPoints.Length);
         return spawnPoints[sp_index];
     }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
+
+        if (bots.Count + PhotonNetwork.CurrentRoom.PlayerCount > 4) {
+            RemoveBot();
+        }
+    }
     public void CreateNewBot()
     {
+        if (bots.Count + PhotonNetwork.CurrentRoom.PlayerCount >= 4)
+        {
+            Debug.LogWarning("Max number of players reached");
+            return;
+        }
+
         Transform spawn = GetRandomSpawnPoint();
         GameObject bot = PhotonNetwork.Instantiate(botPrefab.name,spawn.position , spawn.rotation);
         bots.Add(bot);
@@ -81,10 +97,18 @@ public class Launcher : MonoBehaviourPunCallbacks
         bot.GetComponent<PhotonView>().RPC("SetNameText", RpcTarget.AllBuffered, "TankBot_0" + bots.Count.ToString());
         bot.GetComponent<TankController>().OnDied += OnPlayerDead;
         bot.GetComponent<TankControllerBot>().launcher = this;
-
+        botCountLabel.text = bots.Count.ToString();
         leaderboard.photonView.RPC("JoinLeaderBoard", RpcTarget.MasterClient, "TankBot_0" + bots.Count.ToString());
     }
 
+    public void RemoveBot()
+    {
+        PhotonNetwork.Destroy(bots[bots.Count - 1]);
+        leaderboard.leaderboardData.Remove(bots[bots.Count - 1].GetComponent<TankController>().PlayerName);
+        leaderboard.photonView.RPC("UpdateLeaderboardUI", RpcTarget.All, leaderboard.leaderboardData);
+        bots.RemoveAt(bots.Count - 1);
+        botCountLabel.text = bots.Count.ToString();
+    }
     public override void OnMasterClientSwitched(Player newMasterClient)
     {
         if (PhotonNetwork.IsMasterClient)

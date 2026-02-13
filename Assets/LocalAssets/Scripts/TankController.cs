@@ -115,24 +115,27 @@ public class TankController : MonoBehaviourPunCallbacks
         bullet.GetComponent<BulletScript>().owner = PlayerName;
         bullet.GetComponent<BulletScript>().damage = damage;
         bullet.GetComponent<BulletScript>().bounceCount = bounceCount;
+        cannonTip.GetComponent<Light>().enabled = true;
+        StartCoroutine(TurnOfShootLight());
         startCooldown();
     }
 
     [PunRPC]
-    public void DiedTo(string killerNick)
+    public virtual void DiedTo(string killerNick)
     {
         // death animation?
-        Debug.Log("in diedTo of " + PlayerName);
-        // hide the dead
+       
         controlEnabled = false;
         transform.position += new Vector3(0, -10, 0);
-        // add points to killer
-        // TODO
-        // reset life of dead
         OnDied?.Invoke(this,killerNick);
 
     }
 
+    private IEnumerator TurnOfShootLight()
+    {
+        yield return new WaitForSeconds(0.1f);
+        cannonTip.GetComponent<Light>().enabled = false;
+    }
 
 
     public override void OnPlayerEnteredRoom(Player newPlayer)

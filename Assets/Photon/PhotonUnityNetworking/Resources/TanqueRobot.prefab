@@ -68,6 +68,16 @@ PrefabInstance:
       propertyPath: controlEnabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4546162601786236353, guid: 36550ba6b482c35458bc8fe71f67812f,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6486452272985789993, guid: 36550ba6b482c35458bc8fe71f67812f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 3.168
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4288924903106459769, guid: 36550ba6b482c35458bc8fe71f67812f, type: 3}
     m_RemovedGameObjects: []
@@ -138,7 +148,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: -1372625422
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 12
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 0

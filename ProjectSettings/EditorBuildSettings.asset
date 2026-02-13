@@ -17,5 +17,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/testTanques.unity
     guid: 140a73ae1929ea8469d4fe655b4010e7
+  - enabled: 1
+    path: Assets/Scenes/BattleScenario.unity
+    guid: 962f08242ff54034593efd7642ecdfb4
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

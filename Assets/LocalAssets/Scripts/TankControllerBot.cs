@@ -28,8 +28,9 @@ public class TankControllerBot : TankController
 
         if (PhotonNetwork.IsMasterClient && controlEnabled)
         {
-            if (agent.hasPath == false)
+            if (agent.hasPath == false || agent.isStopped)
             {
+                agent.isStopped = false;
                 agent.SetDestination(launcher.GetRandomSpawnPoint().position);
             }
            
@@ -41,27 +42,47 @@ public class TankControllerBot : TankController
                 GameObject closestTank = launcher.tanks.Where(x => x != gameObject).Aggregate<GameObject>((acc, x) => 
                      (Vector3.Distance(acc.transform.position,transform.position) < Vector3.Distance(x.transform.position, transform.position)) ? acc : x   
                 );
-                Debug.Log(closestTank.name);
                 rotor.LookAt(closestTank.transform.position);
             }
             
 
             if (CheckClearSight() && CooldownOff)
             {
-                Debug.Log("Shooting");
                 HandleShooting(rotor.transform.forward);
             }
         }
 
 
     }
+    [PunRPC]
+    public override void DiedTo(string killerNick)
+    {
+        agent.isStopped = true;
+        controlEnabled = false;
+        agent.Warp( new Vector3(0, -10, 0));
+        agent.baseOffset = -20;
+        launcher.photonView.RPC("SetPoints", RpcTarget.MasterClient, PlayerName, killerNick);
+        StartCoroutine(DelayedBotRespawn());
+    }
 
+    private IEnumerator DelayedBotRespawn()
+    {
+        yield return new WaitForSeconds(5);
+        Debug.Log("respawing bot");
+        
+        transform.position = launcher.GetRandomSpawnPoint().position;
+        controlEnabled = true;
+        agent.baseOffset = 0.5f;
+        agent.isStopped = false;
+        pv.RPC("SetLife", RpcTarget.All, maxLife);
+        // make invincible for some seconds?
+    }
 
     public bool CheckClearSight()
     {
 
         if (Physics.Raycast(cannonTip.position,rotor.forward,out RaycastHit hitInfo,500f)){
-            if (hitInfo.transform.TryGetComponent<TankController>(out TankController enemy))
+            if (hitInfo.transform.TryGetComponent<TankController>(out _))
             {
                 
                 return true;
