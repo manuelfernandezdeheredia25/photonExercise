@@ -7,4 +7,5 @@ public class TankInfo : ScriptableObject
 
     public float life, damage, speed, fireRate;
 
+    public Sprite tankRender;
 }

@@ -5,9 +5,13 @@ using System.Collections.Generic;
 using TMPro;
 using Photon.Realtime;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 public class Launcher : MonoBehaviourPunCallbacks
 {
+
+    public int winningPoints = 3000;
+    public GameObject winPanel;
     //Creamos una variable pública para poder instanciar al jugador a través de su componente PhotonView
     public PhotonView botPrefab;
     
@@ -32,23 +36,9 @@ public class Launcher : MonoBehaviourPunCallbacks
     
     void Start()
     {
-        //Inicia el servidor al empezar la escena.
-        // PhotonNetwork.ConnectUsingSettings();
-
-        // OnJoinedRoom();
-
         PhotonNetwork.JoinRandomOrCreateRoom(expectedMaxPlayers: 4);
     }
 
-    /*
-    public override void OnConnectedToMaster()
-    {
-        Debug.Log("Conexión al master realizada");
-
-        //Esto nos unirá a una sesión o creará una si no existe ninguna.
-        PhotonNetwork.JoinRandomOrCreateRoom();
-    }
-    */
 
     public override void OnJoinedRoom()
     {
@@ -63,6 +53,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         players.Add(player);
         if (PhotonNetwork.IsMasterClient) {
             botPanel.SetActive(true);
+            
         }
         Debug.Log("finished player join");
     }
@@ -71,6 +62,19 @@ public class Launcher : MonoBehaviourPunCallbacks
     {
         int sp_index = Random.Range(0, spawnPoints.Length);
         return spawnPoints[sp_index];
+    }
+
+    public Transform GetClearSpawnPoint()
+    {
+        foreach (Transform s in spawnPoints)
+        {
+            //check if any tank is close to spawn point
+            if (tanks.Any((x) => Vector3.Distance(x.transform.position, s.position) < 15))
+                continue;    
+            return s;
+        }
+        // if not one is clear return a random one(should be impossible for not one being clear)
+        return GetRandomSpawnPoint();
     }
 
     public override void OnPlayerEnteredRoom(Player newPlayer)
@@ -90,7 +94,7 @@ public class Launcher : MonoBehaviourPunCallbacks
             return;
         }
 
-        Transform spawn = GetRandomSpawnPoint();
+        Transform spawn = GetClearSpawnPoint();
         GameObject bot = PhotonNetwork.Instantiate(botPrefab.name,spawn.position , spawn.rotation);
         bots.Add(bot);
        
@@ -123,7 +127,6 @@ public class Launcher : MonoBehaviourPunCallbacks
        
         StartCoroutine(DelayedSpawn(playerDead,5));
         //update leaderboard por dead player
-
         photonView.RPC("SetPoints", RpcTarget.MasterClient, playerDead.PlayerName, killer);
     }
 
@@ -141,8 +144,26 @@ public class Launcher : MonoBehaviourPunCallbacks
             leaderboard.leaderboardData[playerDead][0] -= 25;
             leaderboard.leaderboardData[killer][0] += 25;
         }
-        
+
+        if (leaderboard.leaderboardData[killer][0] >= winningPoints)
+        {
+            //Change to winning scene
+            Debug.Log(killer + " has won the game!");
+            photonView.RPC("EndMatch", RpcTarget.All,killer);
+        }
+
+
         leaderboard.photonView.RPC("UpdateLeaderboardUI", RpcTarget.All, leaderboard.leaderboardData);
+    }
+
+    [PunRPC]
+    public void EndMatch(string winner)
+    {
+
+        winPanel.SetActive(true);
+        winPanel.GetComponentInChildren<TMP_Text>().text = winner + " ganó la partida!";
+        StartCoroutine(DelayedQuit());
+
     }
 
   
@@ -151,11 +172,22 @@ public class Launcher : MonoBehaviourPunCallbacks
 
         yield return new WaitForSeconds(delay);
         Debug.Log("respawing");
-        int SpawnPointIndex = Random.Range(0, spawnPoints.Length);
-        player.transform.position = spawnPoints[SpawnPointIndex].position;
+        player.transform.position = GetClearSpawnPoint().position;
         player.controlEnabled = true;
         player.pv.RPC("SetLife",RpcTarget.All, player.maxLife);
         // make invincible for some seconds?
+    }
+    IEnumerator DelayedQuit()
+    {
+        yield return new WaitForSeconds(10);
+        OnQuit();
+    }
+
+    public void OnQuit()
+    {
+        PhotonNetwork.LeaveRoom();
+        PhotonNetwork.Disconnect();
+        SceneManager.LoadScene("MenuPrincipal");
     }
 
 }

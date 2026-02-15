@@ -18,3 +18,4 @@ MonoBehaviour:
   damage: 0.5
   speed: 0.5
   fireRate: 0.5
+  tankRender: {fileID: 21300000, guid: 7203e46bfa5605d47adb2acb95e57b5a, type: 3}

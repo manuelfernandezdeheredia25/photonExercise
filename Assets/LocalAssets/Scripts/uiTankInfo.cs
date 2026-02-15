@@ -12,6 +12,7 @@ public class uiTankInfo : MonoBehaviour
         lifeSlider.GetComponent<Slider>().value = tankSO.life;
         speedSlider.GetComponent<Slider>().value = tankSO.speed;
         rateSlider.GetComponent<Slider>().value = tankSO.fireRate;
+        image.GetComponent<Image>().sprite = tankSO.tankRender;
     }
 
 

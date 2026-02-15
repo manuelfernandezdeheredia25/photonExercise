@@ -28,7 +28,7 @@ public class TankControllerBot : TankController
 
         if (PhotonNetwork.IsMasterClient && controlEnabled)
         {
-            if (agent.hasPath == false || agent.isStopped)
+            if (agent.hasPath == false || agent.isStopped || agent.isPathStale)
             {
                 agent.isStopped = false;
                 agent.SetDestination(launcher.GetRandomSpawnPoint().position);
@@ -38,10 +38,18 @@ public class TankControllerBot : TankController
 
             if (launcher.tanks.Count > 0)
             {
-                
-                GameObject closestTank = launcher.tanks.Where(x => x != gameObject).Aggregate<GameObject>((acc, x) => 
+                var otherTanks = launcher.tanks.Where(x => x != gameObject);
+                GameObject closestTank = otherTanks.Aggregate<GameObject>((acc, x) => 
                      (Vector3.Distance(acc.transform.position,transform.position) < Vector3.Distance(x.transform.position, transform.position)) ? acc : x   
                 );
+
+                if (Vector3.Distance(closestTank.transform.position,transform.position) < 50)
+                {
+                    Vector3 dirBetween = transform.position - closestTank.transform.position;
+                    agent.SetDestination(closestTank.transform.position + dirBetween.normalized * 50);
+                    
+                }
+                
                 rotor.LookAt(closestTank.transform.position);
             }
             
@@ -70,7 +78,7 @@ public class TankControllerBot : TankController
         yield return new WaitForSeconds(5);
         Debug.Log("respawing bot");
         
-        transform.position = launcher.GetRandomSpawnPoint().position;
+        transform.position = launcher.GetClearSpawnPoint().position;
         controlEnabled = true;
         agent.baseOffset = 0.5f;
         agent.isStopped = false;
