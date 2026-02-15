@@ -28,10 +28,12 @@ public class TankControllerBot : TankController
 
         if (PhotonNetwork.IsMasterClient && controlEnabled)
         {
-            if (agent.hasPath == false || agent.isStopped || agent.isPathStale)
+            if ((agent.hasPath == false || agent.isStopped || agent.isPathStale))
             {
-                agent.isStopped = false;
+                
+                
                 agent.SetDestination(launcher.GetRandomSpawnPoint().position);
+                
             }
            
             body.transform.forward = Vector3.RotateTowards(body.transform.forward, agent.velocity, 10 * Time.deltaTime, 10 * Time.deltaTime);
@@ -43,10 +45,10 @@ public class TankControllerBot : TankController
                      (Vector3.Distance(acc.transform.position,transform.position) < Vector3.Distance(x.transform.position, transform.position)) ? acc : x   
                 );
 
-                if (Vector3.Distance(closestTank.transform.position,transform.position) < 50)
+                if (Vector3.Distance(closestTank.transform.position,transform.position) < 30)
                 {
                     Vector3 dirBetween = transform.position - closestTank.transform.position;
-                    agent.SetDestination(closestTank.transform.position + dirBetween.normalized * 50);
+                    agent.SetDestination(closestTank.transform.position + dirBetween.normalized * 30);
                     
                 }
                 
@@ -67,7 +69,7 @@ public class TankControllerBot : TankController
     {
         agent.isStopped = true;
         controlEnabled = false;
-        agent.Warp( new Vector3(0, -10, 0));
+       
         agent.baseOffset = -20;
         launcher.photonView.RPC("SetPoints", RpcTarget.MasterClient, PlayerName, killerNick);
         StartCoroutine(DelayedBotRespawn());
@@ -77,11 +79,11 @@ public class TankControllerBot : TankController
     {
         yield return new WaitForSeconds(5);
         Debug.Log("respawing bot");
-        
-        transform.position = launcher.GetClearSpawnPoint().position;
+        agent.baseOffset = 0.65f;
+        agent.Warp( launcher.GetClearSpawnPoint().position);
         controlEnabled = true;
-        agent.baseOffset = 0.5f;
-        agent.isStopped = false;
+        
+       
         pv.RPC("SetLife", RpcTarget.All, maxLife);
         // make invincible for some seconds?
     }

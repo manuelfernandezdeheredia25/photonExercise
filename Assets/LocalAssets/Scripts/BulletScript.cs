@@ -44,19 +44,18 @@ public class BulletScript : MonoBehaviour
         {
             if (tank.PlayerName == owner)
                 return;
-            if (!tank.controlEnabled)
-                return;
             if (PhotonNetwork.IsMasterClient)
             {
                 Debug.Log("bullet hit");
                 tank.pv.RPC("SetLife", RpcTarget.All, tank.life - damage);
-                Destroy(gameObject);
                 if (tank.life <= 0)
                 {
                     tank.pv.RPC("DiedTo", RpcTarget.All, owner);
+                    Destroy(gameObject);
                     return;
                 }
             }
+            Destroy(gameObject);
         }
 
         bounces++;

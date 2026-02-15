@@ -77,6 +77,19 @@ public class Launcher : MonoBehaviourPunCallbacks
         return GetRandomSpawnPoint();
     }
 
+    public Transform GetCrowdedSpawnPoint()
+    {
+        foreach (Transform s in spawnPoints)
+        {
+            //check if any tank is close to spawn point
+            if (tanks.Any((x) => Vector3.Distance(x.transform.position, s.position) < 15))
+                return s;
+           
+        }
+        // if not one is clear return a random one(should be impossible for not one being clear)
+        return GetRandomSpawnPoint();
+    }
+
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
         if (!PhotonNetwork.IsMasterClient)
