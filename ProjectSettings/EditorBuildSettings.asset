@@ -8,15 +8,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MenuPrincipal.unity
     guid: bfff8e64dfcd2bc44bb67d69ac2b7065
-  - enabled: 0
-    path: Assets/Scenes/photonExamples2.unity
-    guid: c5404f29a4544ca47994bfc0ee512171
-  - enabled: 0
-    path: Assets/Scenes/tutorialPhoton.unity
-    guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
-    path: Assets/Scenes/testTanques.unity
-    guid: 140a73ae1929ea8469d4fe655b4010e7
   - enabled: 1
     path: Assets/Scenes/BattleScenario.unity
     guid: 962f08242ff54034593efd7642ecdfb4

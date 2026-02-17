@@ -17,4 +17,10 @@ public class PlayerUsername : MonoBehaviourPunCallbacks
         playerUsername.text = name;
         playerUsername.color = photonView.IsMine ? Color.white : Color.red;
     }
+    [PunRPC]
+    public void SetNameBot(string name)
+    {
+        playerUsername.text = name;
+        playerUsername.color = Color.red;
+    }
 }

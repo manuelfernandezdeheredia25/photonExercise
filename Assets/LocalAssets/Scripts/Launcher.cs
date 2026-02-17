@@ -69,7 +69,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         foreach (Transform s in spawnPoints)
         {
             //check if any tank is close to spawn point
-            if (tanks.Any((x) => Vector3.Distance(x.transform.position, s.position) < 15))
+            if (tanks.Any((x) => Vector3.Distance(x.transform.position, s.position) < 25))
                 continue;    
             return s;
         }
@@ -111,7 +111,7 @@ public class Launcher : MonoBehaviourPunCallbacks
         GameObject bot = PhotonNetwork.Instantiate(botPrefab.name,spawn.position , spawn.rotation);
         bots.Add(bot);
        
-        bot.GetComponent<PhotonView>().RPC("SetNameText", RpcTarget.AllBuffered, "TankBot_0" + bots.Count.ToString());
+        bot.GetComponent<PhotonView>().RPC("SetNameBot", RpcTarget.AllBuffered, "TankBot_0" + bots.Count.ToString());
         bot.GetComponent<TankController>().OnDied += OnPlayerDead;
         bot.GetComponent<TankControllerBot>().launcher = this;
         botCountLabel.text = bots.Count.ToString();
